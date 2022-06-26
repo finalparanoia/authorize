@@ -26,13 +26,21 @@ app.add_middleware(
 
 # 返还结果安全检查
 def result_check(data: dict or list or bool):
+    # 反序列化结果为字符串
     str_data = dumps(data)
+    # 使用正则表达式匹配关键字，该方法会将匹配到的关键字添加入列表并返还
+    # 如果返还列表长度不为0则字符串中至少包含一个关键字
     if len(findall(r"passw", str_data)) != 0:
+        # 触发HTTP403
         raise HTTPException(status_code=403, detail="Request Forbidden")
         # return data
+    # 如果返还值类型为bool，则操作失败
+    # 触发HTTP403
     elif type(data) == bool:
         raise HTTPException(status_code=403, detail="UnAuthorized")
+    # 如果均通过，则结果正常
     else:
+        # 直接执行返还
         return data
 
 
