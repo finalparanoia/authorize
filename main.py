@@ -39,12 +39,12 @@ def result_check(request: Request, data: dict or list or bool):
     # 如果返还值类型为bool，则操作失败
     # 触发HTTP403
     elif type(data) == bool:
-        bll.log(request.client.host, request.client.port, request.base_url.path, False)
+        bll.log(request.client.host, request.client.port, str(request.base_url), False)
         raise HTTPException(status_code=403, detail="UnAuthorized")
     # 如果均通过，则结果正常
     else:
         # 直接执行返还
-        bll.log(request.client.host, request.client.port, request.base_url.path, True)
+        bll.log(request.client.host, request.client.port, str(request.base_url), True)
         return data
 
 
