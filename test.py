@@ -64,12 +64,12 @@ class TestBLLFunc(unittest.TestCase):
 
     def test_auth_passwd(self):
         self.assertEqual(False, bll.auth_passwd("", ""))
-        self.assertEqual(False, bll.auth_passwd("114514", "23333"))
+        self.assertEqual(False, bll.auth_passwd("079", "23333"))
         self.assertIn("tmp_uid" and "token", bll.auth_passwd("admin", "admin"))
 
     def test_get_token(self):
         self.assertEqual(False, bll.auth_passwd("", ""))
-        self.assertEqual(False, bll.auth_passwd("114514", "23333"))
+        self.assertEqual(False, bll.auth_passwd("079", "23333"))
         self.assertIn("tmp_uid" and "token", bll.auth_passwd("admin", "admin"))
 
     def test_auth_token(self):
@@ -80,12 +80,12 @@ class TestBLLFunc(unittest.TestCase):
 
     def test_revoke_token_all(self):
         self.assertEqual(False, bll.auth_passwd("", ""))
-        self.assertEqual(False, bll.auth_passwd("114514", "23333"))
+        self.assertEqual(False, bll.auth_passwd("079", "23333"))
         self.assertIn("tmp_uid" and "token", bll.auth_passwd("admin", "admin"))
 
     def test_auth_delete(self):
         self.assertEqual(False, bll.auth_passwd("", ""))
-        self.assertEqual(False, bll.auth_passwd("114514", "23333"))
+        self.assertEqual(False, bll.auth_passwd("079", "23333"))
 
     def test_log(self):
         pass
@@ -101,7 +101,7 @@ class TestBLLFunc(unittest.TestCase):
         self.assertEqual(1, len(bll.__find_profile__("db", "auth", {"uid": "admin"})))
 
     def test___collision_check__(self):
-        self.assertEqual(True, bll.__collision_check__("db", "auth", {"2333": "114514"}))
+        self.assertEqual(True, bll.__collision_check__("db", "auth", {"2333": "079"}))
         self.assertEqual(False, bll.__collision_check__("db", "auth", {"uid": "admin"}))
 
     def test____gen_token__(self):
@@ -117,7 +117,7 @@ class TestBLLFunc(unittest.TestCase):
 
 
 # if __name__ == "__main__":
-#     # unittest.main()
+#     unittest.main()
 
 suite_http_api = unittest.TestLoader().loadTestsFromTestCase(TestHAPIFunc)
 suite_bll = unittest.TestLoader().loadTestsFromTestCase(TestBLLFunc)
