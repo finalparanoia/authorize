@@ -3,7 +3,7 @@ from pymongo import MongoClient
 
 class Dal:
     def __init__(self):
-        self.db_conn = MongoClient("mongodb://root:123456@localhost:27017/")
+        self.db_conn = MongoClient("mongodb://localhost:27017/")
 
     # 添加一条记录
     def add_one(self, db: str, col: str, data: list or dict):

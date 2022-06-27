@@ -129,6 +129,15 @@ class Bll:
             # 返还失败
             return False
 
+    # 日志
+    def log(self, ip: str, port: int, i_face: str, status: bool):
+        profile = {
+            "ip": ip,
+            "port": port,
+            "i_face": i_face,
+            "status": status
+        }
+        self.__db__.add_one("db", "log", profile)
     # 内部方法
 
     # 新建账户
