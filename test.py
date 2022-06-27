@@ -5,6 +5,7 @@ from fastapi import HTTPException
 
 from main import result_check
 from libs.bll import get_hash, gen_uid, Bll
+from HwTestReport import HTMLTestReport
 
 
 class Request:
@@ -22,7 +23,7 @@ r = Request()
 bll = Bll()
 
 
-class TestAPIFunc(unittest.TestCase):
+class TestHAPIFunc(unittest.TestCase):
 
     def setUp(self) -> None:
         pass
@@ -116,4 +117,16 @@ class TestBLLFunc(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main()
+    # unittest.main()
+    suite_http_api = unittest.TestLoader().loadTestsFromTestCase(TestHAPIFunc)
+    suite_bll = unittest.TestLoader().loadTestsFromTestCase(TestBLLFunc)
+    suites = unittest.TestSuite()
+    suites.addTests([suite_http_api, suite_bll])
+    with open('./HwTestReportIMG.html', 'wb') as report:
+        runner = HTMLTestReport(
+            stream=report,
+            verbosity=2,
+            images=True,
+            title='授权平台 测试',
+            description='详情',
+            tester='Johnny')
