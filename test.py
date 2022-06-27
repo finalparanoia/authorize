@@ -50,6 +50,14 @@ class TestFunc(unittest.TestCase):
     def test____gen_token__(self):
         self.assertIn("tmp_uid" and "token", bll.__gen_token__(""))
 
+    def test___revoke_token__(self):
+        self.assertEqual(False, bll.__revoke_token__("", ""))
+        self.assertEqual(True, bll.__revoke_token__("sss", "aaa"))
+
+    def test___collision_check__(self):
+        self.assertEqual(True, bll.__collision_check__("db", "auth", {"2333": "114514"}))
+        self.assertEqual(False, bll.__collision_check__("db", "auth", {"uid": "admin"}))
+
 
 if __name__ == "__main__":
     unittest.main()
