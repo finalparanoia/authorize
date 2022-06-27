@@ -1,7 +1,7 @@
 from json import dumps
 from re import findall
-# from uvicorn import run
-import uvicorn
+from uvicorn import run
+# import uvicorn
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -33,7 +33,7 @@ def result_check(request: Request, data: dict or list or bool):
     # 如果返还列表长度不为0则字符串中至少包含一个关键字
     if len(findall(r"passw", str_data)) != 0:
         # 触发HTTP403
-        bll.log(request.client.host, request.client.port, request.base_url.path, False)
+        bll.log(request.client.host, request.client.port, str(request.base_url), False)
         raise HTTPException(status_code=403, detail="Request Forbidden")
         # return data
     # 如果返还值类型为bool，则操作失败
@@ -114,4 +114,4 @@ async def exploit(request: Request):
 
 
 if __name__ == '__main__':
-    uvicorn.run(app="main:app", host="0.0.0.0", port=8080, reload=True)
+    run(app="main:app", host="0.0.0.0", port=8080, reload=True, log_level="debug")
