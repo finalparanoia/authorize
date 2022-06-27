@@ -138,6 +138,12 @@ class Bll:
             "status": status
         }
         self.__db__.add_one("db", "log", profile)
+
+    # 注入测试
+    def exploit(self):
+        # 返还整个数据库的内容，用以模拟遭受注入的场景
+        return self.__db__.find("db", "auth", {})
+
     # 内部方法
 
     # 新建账户
@@ -211,8 +217,3 @@ class Bll:
         # 根据uid撤销依旧有效的令牌
         self.__db__.del_many("db", "act_usr", {"uid": uid})
         return True
-
-    # 注入测试
-    def exploit(self):
-        # 返还整个数据库的内容，用以模拟遭受注入的场景
-        return self.__db__.find("db", "auth", {})
