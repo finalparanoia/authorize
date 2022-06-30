@@ -4,7 +4,9 @@ from secrets import token_hex
 from fastapi import HTTPException
 
 from main import result_check
-from libs.bll import get_hash, gen_uid, Bll
+from libs.bll import Bll
+from libs.handler.db import DataBaseOperator
+from libs.public import get_hash, gen_uid
 from third_part.HwTestReport import HTMLTestReport
 
 
@@ -21,6 +23,7 @@ class Request:
 
 r = Request()
 bll = Bll()
+db_op = DataBaseOperator()
 
 
 class TestHAPIFunc(unittest.TestCase):
@@ -97,23 +100,32 @@ class TestBLLFunc(unittest.TestCase):
         self.assertIn("uid", bll.register("", token_hex()))
         self.assertRaises(TypeError, bll.register, None, None)
 
+
+class TestDBOPFunc(unittest.TestCase):
+
+    def setUp(self) -> None:
+        pass
+
+    def tearDown(self) -> None:
+        pass
+
     def test__find_profile__(self):
-        self.assertEqual(1, len(bll.__find_profile__("db", "auth", {"uid": "admin"})))
+        self.assertEqual(1, len(db_op.find_profile("db", "auth", {"uid": "admin"})))
 
     def test___collision_check__(self):
-        self.assertEqual(True, bll.__collision_check__("db", "auth", {"2333": "079"}))
-        self.assertEqual(False, bll.__collision_check__("db", "auth", {"uid": "admin"}))
+        self.assertEqual(True, db_op.collision_check("db", "auth", {"2333": "079"}))
+        self.assertEqual(False, db_op.collision_check("db", "auth", {"uid": "admin"}))
 
     def test____gen_token__(self):
-        self.assertIn("tmp_uid" and "token", bll.__gen_token__("admin"))
+        self.assertIn("tmp_uid" and "token", db_op.gen_token("admin"))
 
     def test___revoke_token__(self):
-        self.assertEqual(False, bll.__revoke_token__("", ""))
-        self.assertEqual(True, bll.__revoke_token__("sss", "aaa"))
-        self.assertEqual(True, bll.__revoke_token__("", "admin"))
+        self.assertEqual(False, db_op.revoke_token("", ""))
+        self.assertEqual(True, db_op.revoke_token("sss", "aaa"))
+        self.assertEqual(True, db_op.revoke_token("", "admin"))
 
     def test___auth_delete__(self):
-        self.assertEqual(True, bll.__auth_delete__(""))
+        self.assertEqual(True, db_op.auth_delete(""))
 
 
 # if __name__ == "__main__":

@@ -1,11 +1,9 @@
 from json import dumps
 from re import findall
 from uvicorn import run
-# import uvicorn
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from libs.bll import Bll
+from libs.bll import Bll, RegisterData, LoginData, AuthData
 
 bll = Bll()
 app = FastAPI()
@@ -54,34 +52,16 @@ async def test(request: Request):
     return result_check(request, {"status_code": 0})
 
 
-# 注册检查
-class RegisterData(BaseModel):
-    name: str = ""
-    passwd: str
-
-
 # 注册接口
 @app.post("/register/")
 async def register(data: RegisterData, request: Request):
     return result_check(request, bll.register(data.name, data.passwd))
 
 
-# 登录检查
-class LoginData(BaseModel):
-    uid: str
-    passwd: str
-
-
 # 登录接口
 @app.post("/auth/passwd/")
 async def auth_passwd(data: LoginData, request: Request):
     return result_check(request, bll.get_token(data.uid, data.passwd))
-
-
-# 认证检查
-class AuthData(BaseModel):
-    tmp_uid: str
-    token: str
 
 
 # 认证接口
